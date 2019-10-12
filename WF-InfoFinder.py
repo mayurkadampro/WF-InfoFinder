@@ -59,6 +59,8 @@ def main():
         elif (output == 6):
             shoW_clear_password(opt=opt)
         elif (output == 7):
+            enable_disable_interface()
+        elif (output == 8):
             print(""+END,end="")
             sys.exit(0)
         else:
@@ -94,7 +96,8 @@ def menu():
     print(LightCyan+"[4] "+YELLOW+"Current Wireless Interface (Including SNR)"+END)
     print(LightCyan+"[5] "+YELLOW+"Generate Full Report"+END)
     print(LightCyan+"[6] "+YELLOW+"Show Cleartext Passwords"+END)
-    print(LightCyan+"[7] "+YELLOW+"Exit\n"+END)
+    print(LightCyan+"[7] "+YELLOW+"Network interfaces action (Run As Administrator)"+END)
+    print(LightCyan+"[8] "+YELLOW+"Exit\n"+END)
     output = input(LightCyan+"[+] "+YELLOW+"Select your options : ").lower()
     if('--save' in output):
         return output.split()
@@ -157,7 +160,14 @@ def shoW_clear_password(opt=None):
         print(p.read())
     input(LightCyan+"[+] "+YELLOW+"Press enter key to continue :) "+END)
 
+def enable_disable_interface():
+    p = os.popen('netsh interface show interface')
+    print(p.read()+"\n")
+    interface_name = input(LightCyan+"[+] "+YELLOW+"Enter interface name from above list : ").strip()
+    action = input(LightCyan+"[+] "+YELLOW+"Enter enable/disable action command : ").strip()
+    p = os.popen('netsh interface set interface '+interface_name+' '+action.lower())
+    print(p.read().strip())
+    input(LightCyan+"[+] "+YELLOW+"Press enter key to continue :) "+END)
+
 if __name__ == "__main__":
     main()
-    
-
