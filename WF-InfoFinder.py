@@ -33,12 +33,12 @@ def logo():
 
 def main():
     platform_output = check_system()
-    os.system('mode con: cols=125 lines=30')
+    os.system('cmd: cols=125 lines=30')
     logo()
     check_os_animation()
     print(LightCyan+"[√] "+YELLOW+"You are running on "+platform_output+" Machine, Everything is Perfect!!!"+END)
     sleep(5)
-    os.system('mode con: cols=125 lines=30')
+    os.system('cmd: cols=125 lines=30')
     while True:       
         logo()
         output = menu()
@@ -55,7 +55,7 @@ def main():
         elif (output == 4):
             current_interface(opt=opt)
         elif (output == 5):
-            gen_full_report()
+            gen_full_report(opt=opt)
         elif (output == 6):
             shoW_clear_password(opt=opt)
         elif (output == 7):
@@ -103,6 +103,7 @@ def menu():
 def list_of_profile(opt=None):
     if(opt!=None):
         os.popen('netsh wlan show profiles >> profile.txt')
+        print(LightCyan+"[√] "+YELLOW+"Profile text file has been generated"+END)
     else:
         p = os.popen('netsh wlan show profiles')
         print(p.read())
@@ -111,6 +112,7 @@ def list_of_profile(opt=None):
 def current_interface(opt=None):
     if(opt!=None):
         os.popen('netsh wlan show interfaces >> Interface_info.txt')
+        print(LightCyan+"[√] "+YELLOW+"Interface info text file has been generated"+END)
     else:
         p = os.popen('netsh wlan show interfaces')
         print(p.read())
@@ -119,6 +121,7 @@ def current_interface(opt=None):
 def list_of_available_SSIDs(opt=None):
     if(opt!=None):
         os.popen('netsh wlan show networks >> networks.txt')
+        print(LightCyan+"[√] "+YELLOW+"Networks text file has been generated"+END)
     else:
         p = os.popen('netsh wlan show networks')
         print(p.read())
@@ -127,24 +130,32 @@ def list_of_available_SSIDs(opt=None):
 def list_of_blocked_APs(opt=None):
     if(opt!=None):
         os.popen('netsh wlan show filters >> blocked.txt')
+        print(LightCyan+"[√] "+YELLOW+"Blocked text file has been generated"+END)
     else:
         p = os.popen('netsh wlan show filters')
         print(p.read())
     input(LightCyan+"[+] "+YELLOW+"Press enter key to continue :) "+END)
 
-def gen_full_report():
-    os.popen('netsh wlan show all >> Full_Report.txt')
+def gen_full_report(opt=None):
+    if(opt!=None):
+        os.popen('netsh wlan show all >> Full_Report.txt')
+        print(LightCyan+"[√] "+YELLOW+"Full report text file has been generated"+END)
+    else:
+        p = os.popen('netsh wlan show all')
+        print(p.read())
     input(LightCyan+"[+] "+YELLOW+"Press enter key to continue :) "+END)
 
 def shoW_clear_password(opt=None):
+    p = os.popen('netsh wlan show profiles')
+    print(p.read()+"\n")
+    access_point = input(LightCyan+"[+] "+YELLOW+"Enter wifi profile name from above list : ").strip()
     if(opt!=None):
-        pass
-    else:
-        p = os.popen('netsh wlan show profiles')
-        print(p.read()+"\n")
-        access_point = input(LightCyan+"[+] "+YELLOW+"Enter wifi profile name from above list : ").strip()
         os.popen('netsh wlan show profiles '+access_point+' key=clear >> clear_password.txt')
-        input(LightCyan+"[+] "+YELLOW+"Press enter key to continue :) "+END)
+        print(LightCyan+"[√] "+YELLOW+"Clear password text file has been generated"+END)
+    else:
+        p =  os.popen('netsh wlan show profiles '+access_point+' key=clear')
+        print(p.read())
+    input(LightCyan+"[+] "+YELLOW+"Press enter key to continue :) "+END)
 
 if __name__ == "__main__":
     main()
